@@ -18,6 +18,7 @@ import {
   importCSVData,
   filterData,
 } from '../redux/slices';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const [userInput, setUserInput] = useState('');
@@ -159,7 +160,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <div className={styles.container}>
       <h1>Data Table</h1>
 
       {!isTableVisible && (
@@ -199,12 +200,13 @@ export default function Home() {
           </Button>
           <br />
           <br />
-
-          <DataTable
-            rows={rows}
-            handleUpdateInventory={handleUpdateInventory}
-            handleDeleteRow={handleDeleteRow}
-          />
+          <div className={styles.tableContainer}>
+            <DataTable
+              rows={rows}
+              handleUpdateInventory={handleUpdateInventory}
+              handleDeleteRow={handleDeleteRow}
+            />
+          </div>
         </div>
       )}
     </div>
