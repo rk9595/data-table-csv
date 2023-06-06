@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	TextField,
 	Button,
-	Table,
 	TableHead,
 	TableRow,
 	TableCell,
 	TableBody,
+	CircularProgress,
 } from "@mui/material";
 
 import DataTable from "@/components/DataTable";
@@ -21,9 +21,7 @@ import {
 
 export default function Home() {
 	const [userInput, setUserInput] = useState("");
-	const [isTableVisible, setIsTableVisible] = useState(
-		localStorage.getItem("isTableVisible") === "true"
-	);
+	const [isTableVisible, setIsTableVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [importError, setImportError] = useState("");
 
@@ -107,8 +105,6 @@ export default function Home() {
 			dispatch(importCSVData(data));
 			setIsTableVisible(true);
 			setIsLoading(false);
-			localStorage.setItem("isTableVisible", "true");
-			localStorage.setItem("tableData", JSON.stringify(data));
 		} catch (error) {
 			setIsLoading(false);
 			setImportError("Error occurred while parsing the CSV file.");
@@ -155,33 +151,27 @@ export default function Home() {
 	};
 
 	useEffect(() => {
-		if (
-			typeof window !== "undefined" &&
-			localStorage.getItem("isTableVisible") === "true"
-		) {
-			setIsTableVisible(true);
-		}
+		return () => {
+			// Cleanup if needed
+		};
 	}, []);
-
-	useEffect(() => {
-		const storedData = localStorage.getItem("tableData");
-		if (storedData) {
-			dispatch(importCSVData(JSON.parse(storedData)));
-		}
-	}, [dispatch]);
 
 	return (
 		<div>
 			<h1>Data Table</h1>
 
-			<input type="file" id="csvFileInput" accept=".csv" />
-			<Button variant="contained" color="primary" onClick={importCSV}>
-				Import
-			</Button>
-			<br />
-			<br />
-			{isLoading && <p>Loading...</p>}
-			{importError && <p>{importError}</p>}
+			{!isTableVisible && (
+				<div>
+					<input type="file" id="csvFileInput" accept=".csv" />
+					<Button variant="contained" color="primary" onClick={importCSV}>
+						Import
+					</Button>
+					<br />
+					<br />
+					{isLoading && <CircularProgress />}
+					{importError && <p>{importError}</p>}
+				</div>
+			)}
 
 			{isTableVisible && (
 				<div>
