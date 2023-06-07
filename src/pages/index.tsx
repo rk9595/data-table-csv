@@ -18,7 +18,6 @@ import {
   importCSVData,
   filterData,
 } from '../redux/slices';
-import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const [userInput, setUserInput] = useState('');
@@ -160,7 +159,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div>
       <h1>Data Table</h1>
 
       {!isTableVisible && (
@@ -173,7 +172,7 @@ export default function Home() {
           <br />
 
           {/* Display the message when a file is not selected */}
-          {!fileSelected && <p>Please Choose the file to Import</p>}
+          {!fileSelected && <p>Please Select the file to Import</p>}
 
           {isLoading && <CircularProgress />}
           {importError && <p>{importError}</p>}
@@ -200,13 +199,12 @@ export default function Home() {
           </Button>
           <br />
           <br />
-          <div className={styles.tableContainer}>
-            <DataTable
-              rows={rows}
-              handleUpdateInventory={handleUpdateInventory}
-              handleDeleteRow={handleDeleteRow}
-            />
-          </div>
+
+          <DataTable
+            rows={rows}
+            handleUpdateInventory={handleUpdateInventory}
+            handleDeleteRow={handleDeleteRow}
+          />
         </div>
       )}
     </div>
